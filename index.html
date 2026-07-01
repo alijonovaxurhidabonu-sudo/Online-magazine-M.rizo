@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Cyber Store</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-nav {
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .premium-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .premium-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+        }
+        @keyframes modalShow {
+            from { transform: scale(0.95) translateY(10px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .animate-modal {
+            animation: modalShow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        .pulse-glow {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen flex flex-col selection:bg-purple-500 selection:text-white">
+
+    <!-- NAV BAR -->
+    <nav class="glass-nav sticky top-0 z-40 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center pulse-glow mr-3">
+                    <i class="fa-solid fa-bolt text-white text-lg"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-200 to-purple-400">
+                    NEXUS<span class="text-purple-500 font-light">LAB</span>
+                </span>
+            </div>
+
+            <!-- Qidiruv paneli -->
+            <div class="flex-1 max-w-lg mx-12 hidden md:block">
+                <div class="relative group">
+                    <input type="text" id="searchInput" oninput="searchProducts()" 
+                        class="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-2xl pl-12 pr-4 py-3 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition-all duration-300" 
+                        placeholder="Kelajak gadjetlarini qidiring...">
+                    <div class="absolute top-3.5 left-4 text-gray-500 group-focus-within:text-purple-400 transition-colors">
+                        <i class="fa-solid fa-magnifying-glass-chart text-lg"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Savatcha tugmasi -->
+            <div>
+                <button onclick="toggleCart()" class="relative group p-3 bg-white/5 hover:bg-purple-600/20 border border-white/10 hover:border-purple-500/50 rounded-2xl transition-all duration-300">
+                    <i class="fa-solid fa-bag-shopping text-xl text-gray-300 group-hover:text-purple-400 transition-colors"></i>
+                    <span id="cartCount" class="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold rounded-xl h-6 w-6 flex items-center justify-center scale-0 transition-transform duration-300">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBIL UCHUN QIDIRUV -->
+    <div class="p-4 md:hidden glass-nav">
+        <div class="relative">
+            <input type="text" id="mobileSearchInput" oninput="searchProductsMobile()" 
+                class="w-full bg-white/5 border border-white/10 text-white placeholder-gray-500 rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:border-purple-500" 
+                placeholder="Qidiruv...">
+            <div class="absolute top-3 left-3.5 text-gray-500">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ASOSIY BANNER -->
+    <header class="max-w-7xl w-full mx-auto px-6 pt-12">
+        <div class="glass-card rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-br from-purple-900/20 via-transparent to-transparent">
+            <div class="max-w-xl">
+                <span class="bg-purple-500/10 text-purple-400 text-xs font-bold tracking-widest uppercase px-3 py-1.5 rounded-lg border border-purple-500/20">Yangi Mavsum 2026</span>
+                <!-- Yangilangan normal sarlavha va tavsif matni -->
+                <h2 class="text-4xl md:text-5xl font-black text-white mt-4 leading-tight">Yuqori texnologiyalar va mukammal sifat olami</h2>
+                <p class="text-gray-400 mt-4 text-base md:text-lg">Eng so'nggi rusumdagi original gadjetlar va aqlli qurilmalar faqat bizning do'konda. Sifat va kafolat tizimi kafolatlanadi.</p>
+            </div>
+            <div class="w-full md:w-1/2 max-w-[400px]">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&auto=format&fit=crop&q=80" class="rounded-2xl shadow-2xl border border-white/10 pulse-glow" alt="Hero banner">
+            </div>
+        </div>
+    </header>
+
+    <!-- MAHSULOTLAR RO'YXATI -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-6 py-16">
+        <div class="mb-10">
+            <p class="text-purple-400 font-semibold tracking-wider text-sm uppercase">Eksklyuziv To'plam</p>
+            <h1 class="text-3xl font-extrabold tracking-tight mt-1 text-white">Barcha Mahsulotlar</h1>
+        </div>
+        
+        <!-- Mahsulotlar Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- JS orqali keladi -->
+        </div>
+        
+        <div id="noResults" class="hidden text-center py-24 glass-card rounded-3xl">
+            <i class="fa-solid fa-chart-pie text-6xl text-purple-500/30 mb-4 animate-pulse"></i>
+            <p class="text-gray-400 text-lg">Hech narsa topilmadi.</p>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#070a12] border-t border-white/5 mt-auto">
+        <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center md:text-left">
+            <div>
+                <span class="text-xl font-black tracking-wider text-white">NEXUS<span class="text-purple-500">LAB</span></span>
+                <p class="text-gray-500 text-sm mt-2">Kelajak texnologiyalari va premium gadjetlar do'koni.</p>
+            </div>
+            <div class="flex justify-center space-x-6 text-gray-400">
+                <a href="#" class="hover:text-purple-400 transition-colors"><i class="fa-brands fa-instagram text-xl"></i></a>
+                <a href="#" class="hover:text-purple-400 transition-colors"><i class="fa-brands fa-telegram text-xl"></i></a>
+                <a href="#" class="hover:text-purple-400 transition-colors"><i class="fa-brands fa-youtube text-xl"></i></a>
+            </div>
+            <div class="text-gray-500 text-sm md:text-right">
+                &copy; 2026 NexusLab. Mukammallik sari ilk qadam.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SAVAT MODAL OYNASI -->
+    <div id="cartModal" class="fixed inset-0 z-50 overflow-hidden flex items-center justify-center hidden p-4">
+        <div onclick="toggleCart()" class="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
+        <div class="bg-[#0f1424] border border-white/10 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative z-10 animate-modal flex flex-col max-h-[80vh]">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
+                <h3 class="text-xl font-bold flex items-center text-white">
+                    <i class="fa-solid fa-basket-shopping mr-3 text-purple-400"></i>Sizning savatingiz
+                </h3>
+                <button onclick="toggleCart()" class="h-10 w-10 rounded-xl bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cartItemsList">
+                <!-- JS -->
+            </div>
+
+            <div class="p-6 border-t border-white/5 bg-black/20">
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-gray-400">Umumiy summa:</span>
+                    <span id="cartTotalPrice" class="text-2xl font-black text-purple-400">0 so'm</span>
+                </div>
+                <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-4 rounded-2xl shadow-lg transition-all duration-300">
+                    Rasmiylashtirishga o'tish
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUYURTMA BERISH FORMASI (CHOTKI KARTA) -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 overflow-hidden flex items-center justify-center hidden p-4">
+        <div onclick="closeCheckoutModal()" class="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
+        
+        <div class="bg-[#0f1424] border border-purple-500/30 w-full max-w-md rounded-3xl overflow-hidden shadow-2xl relative z-10 animate-modal p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-white flex items-center">
+                    <i class="fa-solid fa-id-card text-purple-400 mr-3"></i> Ma'lumotlarni kiriting
+                </h3>
+                <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <!-- Forma inputlari -->
+            <form id="orderForm" onsubmit="submitOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Ismingiz</label>
+                    <input type="text" required id="customerName" class="w-full bg-white/5 border border-white/10 focus:border-purple-500 rounded-xl px-4 py-3 text-white outline-none transition-colors" placeholder="Masalan: Ali">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Familiyangiz</label>
+                    <input type="text" required id="customerSurname" class="w-full bg-white/5 border border-white/10 focus:border-purple-500 rounded-xl px-4 py-3 text-white outline-none transition-colors" placeholder="Masalan: Valiov">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Telefon raqamingiz</label>
+                    <input type="tel" required id="customerPhone" class="w-full bg-white/5 border border-white/10 focus:border-purple-500 rounded-xl px-4 py-3 text-white outline-none transition-colors" placeholder="+998 (99) 123-4567">
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-4 rounded-xl shadow-md hover:from-purple-500 hover:to-indigo-500 transition-all duration-300">
+                        Buyurtmani yakunlash
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MUVAFFAQIYATLI YAKUNLASH KARTASI -->
+    <div id="successModal" class="fixed inset-0 z-50 overflow-hidden flex items-center justify-center hidden p-4">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+        <div class="bg-[#0f1424] border border-green-500/30 w-full max-w-sm rounded-3xl p-8 text-center relative z-10 animate-modal">
+            <div class="w-16 h-16 bg-green-500/10 border border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-circle-check text-green-400 text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-black text-white mb-2">Buyurtma qabul qilindi!</h3>
+            <p id="successMessage" class="text-gray-400 text-sm mb-6"></p>
+            <button onclick="closeSuccessModal()" class="bg-green-500 hover:bg-green-600 text-white font-bold px-6 py-2.5 rounded-xl transition-colors w-full">
+                Okey
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const products = [
+            { id: 1, name: "CyberPhone Neon Edge", price: 12500000, image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&auto=format&fit=crop&q=80" },
+            { id: 2, name: "Acoustic X Pro (ANC)", price: 2100000, image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80" },
+            { id: 3, name: "Chrono Quantum Smartwatch", price: 3400000, image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600&auto=format&fit=crop&q=80" },
+            { id: 4, name: "Mechanical Keyboard Ghost RGB", price: 950000, image: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&auto=format&fit=crop&q=80" },
+            { id: 5, name: "Viper Pro Wireless Mouse", price: 780000, image: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=600&auto=format&fit=crop&q=80" },
+            { id: 6, name: "Blade Noutbuk RTX 5080", price: 27000000, image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=600&auto=format&fit=crop&q=80" },
+            { id: 7, name: "VR Headset Horizon 3D", price: 5600000, image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?w=600&auto=format&fit=crop&q=80" },
+            { id: 8, name: "CyberTrack Pad Neon", price: 450000, image: "https://images.unsplash.com/photo-1616440347437-b1c73416efc2?w=600&auto=format&fit=crop&q=80" },
+            { id: 9, name: "Quantum Speaker Aura", price: 1800000, image: "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600&auto=format&fit=crop&q=80" }
+        ];
+
+        let cart = [];
+
+        function displayProducts(arr) {
+            const grid = document.getElementById('productsGrid');
+            const noResults = document.getElementById('noResults');
+            grid.innerHTML = '';
+
+            if (arr.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            }
+            noResults.classList.add('hidden');
+
+            arr.forEach(p => {
+                const card = document.createElement('div');
+                card.className = "premium-card glass-card rounded-3xl p-5 flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="h-56 w-full rounded-2xl overflow-hidden mb-5 bg-gray-900 relative">
+                            <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 line-clamp-1">${p.name}</h3>
+                        <p class="text-purple-400 font-extrabold text-lg mb-6">${p.price.toLocaleString('uz-UZ')} so'm</p>
+                    </div>
+                    <button onclick="addToCart(${p.id})" class="w-full bg-white/5 hover:bg-purple-600 border border-white/10 hover:border-transparent text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-plus mr-2 text-purple-400"></i>
+                        <span>Savatga qo'shish</span>
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function searchProducts() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            displayProducts(products.filter(p => p.name.toLowerCase().includes(q)));
+        }
+
+        function searchProductsMobile() {
+            const q = document.getElementById('mobileSearchInput').value.toLowerCase();
+            displayProducts(products.filter(p => p.name.toLowerCase().includes(q)));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => displayProducts(products));
+
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('hidden');
+        }
+
+        function addToCart(id) {
+            const item = products.find(p => p.id === id);
+            const inCart = cart.find(c => c.id === id);
+
+            if (inCart) {
+                inCart.quantity++;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            updateCart();
+        }
+
+        function changeQty(id, delta) {
+            const inCart = cart.find(c => c.id === id);
+            inCart.quantity += delta;
+            if (inCart.quantity <= 0) {
+                cart = cart.filter(c => c.id !== id);
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const list = document.getElementById('cartItemsList');
+            const count = document.getElementById('cartCount');
+            const total = document.getElementById('cartTotalPrice');
+            
+            list.innerHTML = '';
+            let totalItems = 0, totalPrice = 0;
+
+            cart.forEach(c => {
+                totalItems += c.quantity;
+                totalPrice += c.price * c.quantity;
+
+                const row = document.createElement('div');
+                row.className = "flex items-center justify-between bg-white/5 p-4 rounded-2xl border border-white/5";
+                row.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <img src="${c.image}" class="w-16 h-16 object-cover rounded-xl">
+                        <div class="max-w-[150px]">
+                            <h4 class="font-bold text-white text-sm truncate">${c.name}</h4>
+                            <p class="text-xs text-purple-400 mt-1">${(c.price * c.quantity).toLocaleString('uz-UZ')} so'm</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 bg-black/40 px-3 py-1.5 rounded-xl border border-white/5">
+                        <button onclick="changeQty(${c.id}, -1)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-minus text-xs"></i></button>
+                        <span class="text-sm font-bold text-white px-1">${c.quantity}</span>
+                        <button onclick="changeQty(${c.id}, 1)" class="text-gray-400 hover:text-white"><i class="fa-solid fa-plus text-xs"></i></button>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+
+            count.innerText = totalItems;
+            count.style.transform = totalItems > 0 ? 'scale(1)' : 'scale(0)';
+            if(totalItems === 0) {
+                list.innerHTML = `<div class="text-center py-12 text-gray-500"><i class="fa-solid fa-folder-open text-4xl mb-2"></i><p>Savat bo'sh</p></div>`;
+            }
+
+            total.innerText = totalPrice.toLocaleString('uz-UZ') + " so'm";
+        }
+
+        function openCheckoutModal() {
+            if(cart.length === 0) return alert("Savat bo'sh!");
+            toggleCart();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function submitOrder(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('customerName').value;
+            const surname = document.getElementById('customerSurname').value;
+            
+            closeCheckoutModal();
+            
+            document.getElementById('successMessage').innerText = `Hurmatli ${name} ${surname}, buyurtmangiz muvaffaqiyatli qabul qilindi. Operatorlarimiz tez orada siz bilan bog'lanishadi!`;
+            document.getElementById('successModal').classList.remove('hidden');
+            
+            cart = [];
+            updateCart();
+            document.getElementById('orderForm').reset();
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
